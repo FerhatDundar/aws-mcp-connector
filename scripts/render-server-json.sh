@@ -66,13 +66,14 @@ done
 
 jq -n \
   --arg version "$VERSION" \
+  --arg repo "$REPO" \
   --argjson packages "$packages" \
   '{
     "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
     name: "io.github.FerhatDundar/aws-mcp-connector",
     description: "MCP server for the AWS CLI. Read-only by default; single Go binary.",
-    repository: { url: "https://github.com/${REPO}", source: "github" },
+    repository: { url: ("https://github.com/" + $repo), source: "github" },
     version: $version,
-    websiteUrl: "https://github.com/${REPO}#readme",
+    websiteUrl: ("https://github.com/" + $repo + "#readme"),
     packages: $packages
   }'

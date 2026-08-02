@@ -8,5 +8,408 @@
   },
   "version": "0.1.0",
   "websiteUrl": "https://github.com/FerhatDundar/aws-mcp-connector#readme",
-  "packages": []
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/FerhatDundar/aws-mcp-connector/releases/download/v0.1.0/aws-mcp-connector-plugin-v0.1.0-darwin-arm64.zip",
+      "version": "0.1.0",
+      "fileSha256": "2bb60811b05e6c0faf25405c19d0fe022832952bedee253eed14e2ce0bea4fb0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AWS_PROFILE",
+          "description": "Named profile from ~/.aws/config to use. Leave unset to use the default profile.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_REGION",
+          "description": "Default AWS region if not set elsewhere.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "description": "Static AWS access key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "description": "Static AWS secret key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SESSION_TOKEN",
+          "description": "Temporary session token, if using short-lived credentials.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOW_WRITE",
+          "description": "Set to \"true\" to permit mutating AWS CLI commands. Defaults to read-only.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOWED_SERVICES",
+          "description": "Optional comma-separated allowlist of AWS CLI service names (e.g. \"s3,ec2\"). Unset allows all.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_CLI_PATH",
+          "description": "Optional path to the aws binary. Defaults to \"aws\" resolved via PATH.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    },
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/FerhatDundar/aws-mcp-connector/releases/download/v0.1.0/aws-mcp-connector-plugin-v0.1.0-darwin-amd64.zip",
+      "version": "0.1.0",
+      "fileSha256": "faf3ff74d58fe982c57695cd57f3ddf02a382d314499bc45ed5c5090a05f32ea",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AWS_PROFILE",
+          "description": "Named profile from ~/.aws/config to use. Leave unset to use the default profile.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_REGION",
+          "description": "Default AWS region if not set elsewhere.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "description": "Static AWS access key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "description": "Static AWS secret key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SESSION_TOKEN",
+          "description": "Temporary session token, if using short-lived credentials.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOW_WRITE",
+          "description": "Set to \"true\" to permit mutating AWS CLI commands. Defaults to read-only.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOWED_SERVICES",
+          "description": "Optional comma-separated allowlist of AWS CLI service names (e.g. \"s3,ec2\"). Unset allows all.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_CLI_PATH",
+          "description": "Optional path to the aws binary. Defaults to \"aws\" resolved via PATH.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    },
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/FerhatDundar/aws-mcp-connector/releases/download/v0.1.0/aws-mcp-connector-plugin-v0.1.0-linux-amd64.zip",
+      "version": "0.1.0",
+      "fileSha256": "d83d68be52a76163858b9ab2efdee0b082a0c099010cdfccc2309a59a74d1299",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AWS_PROFILE",
+          "description": "Named profile from ~/.aws/config to use. Leave unset to use the default profile.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_REGION",
+          "description": "Default AWS region if not set elsewhere.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "description": "Static AWS access key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "description": "Static AWS secret key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SESSION_TOKEN",
+          "description": "Temporary session token, if using short-lived credentials.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOW_WRITE",
+          "description": "Set to \"true\" to permit mutating AWS CLI commands. Defaults to read-only.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOWED_SERVICES",
+          "description": "Optional comma-separated allowlist of AWS CLI service names (e.g. \"s3,ec2\"). Unset allows all.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_CLI_PATH",
+          "description": "Optional path to the aws binary. Defaults to \"aws\" resolved via PATH.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    },
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/FerhatDundar/aws-mcp-connector/releases/download/v0.1.0/aws-mcp-connector-plugin-v0.1.0-linux-arm64.zip",
+      "version": "0.1.0",
+      "fileSha256": "52003efa7b480c0a790ad5a75e836d1b5c2c91e9b84d2508c5e82ae864ed8105",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AWS_PROFILE",
+          "description": "Named profile from ~/.aws/config to use. Leave unset to use the default profile.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_REGION",
+          "description": "Default AWS region if not set elsewhere.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "description": "Static AWS access key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "description": "Static AWS secret key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SESSION_TOKEN",
+          "description": "Temporary session token, if using short-lived credentials.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOW_WRITE",
+          "description": "Set to \"true\" to permit mutating AWS CLI commands. Defaults to read-only.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOWED_SERVICES",
+          "description": "Optional comma-separated allowlist of AWS CLI service names (e.g. \"s3,ec2\"). Unset allows all.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_CLI_PATH",
+          "description": "Optional path to the aws binary. Defaults to \"aws\" resolved via PATH.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    },
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/FerhatDundar/aws-mcp-connector/releases/download/v0.1.0/aws-mcp-connector-plugin-v0.1.0-windows-amd64.zip",
+      "version": "0.1.0",
+      "fileSha256": "67bb59a5705ded784380d8fd8f208e2e6e4342d1ba80e7380bd077baddd8fa63",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AWS_PROFILE",
+          "description": "Named profile from ~/.aws/config to use. Leave unset to use the default profile.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_REGION",
+          "description": "Default AWS region if not set elsewhere.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "description": "Static AWS access key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "description": "Static AWS secret key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SESSION_TOKEN",
+          "description": "Temporary session token, if using short-lived credentials.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOW_WRITE",
+          "description": "Set to \"true\" to permit mutating AWS CLI commands. Defaults to read-only.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOWED_SERVICES",
+          "description": "Optional comma-separated allowlist of AWS CLI service names (e.g. \"s3,ec2\"). Unset allows all.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_CLI_PATH",
+          "description": "Optional path to the aws binary. Defaults to \"aws\" resolved via PATH.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    },
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/FerhatDundar/aws-mcp-connector/releases/download/v0.1.0/aws-mcp-connector-plugin-v0.1.0-windows-arm64.zip",
+      "version": "0.1.0",
+      "fileSha256": "f4bbf97361540dcde8edf1dcdb71579e64be7098b112bb96e30d10d318f82182",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AWS_PROFILE",
+          "description": "Named profile from ~/.aws/config to use. Leave unset to use the default profile.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_REGION",
+          "description": "Default AWS region if not set elsewhere.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "description": "Static AWS access key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "description": "Static AWS secret key. Only needed if not using a profile/SSO/role.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_SESSION_TOKEN",
+          "description": "Temporary session token, if using short-lived credentials.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOW_WRITE",
+          "description": "Set to \"true\" to permit mutating AWS CLI commands. Defaults to read-only.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_ALLOWED_SERVICES",
+          "description": "Optional comma-separated allowlist of AWS CLI service names (e.g. \"s3,ec2\"). Unset allows all.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "AWS_MCP_CLI_PATH",
+          "description": "Optional path to the aws binary. Defaults to \"aws\" resolved via PATH.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
 }
