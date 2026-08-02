@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/FerhatDundar/aws-mcp-connector/compare/v0.1.0...v0.1.1) (2026-08-02)
+
+
+### Bug Fixes
+
+* **scripts:** interpolate REPO via jq --arg instead of literal ${REPO} in server.json render ([ea148ea](https://github.com/FerhatDundar/aws-mcp-connector/commit/ea148eac311dd7192bf052558959d6ac5023544b))
+
 ## 0.1.0 (2026-08-02)
 
 Initial release.
