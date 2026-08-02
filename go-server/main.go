@@ -127,6 +127,22 @@ type serverConfig struct {
 	allowedServices map[string]bool // nil/empty means unrestricted
 }
 
+// scrubEmptyPassthroughEnv unsets AWS_PROFILE / AWS_REGION if they're
+// present but set to an empty string. The AWS CLI treats an explicitly-
+// empty AWS_PROFILE as "use the profile literally named ”" and fails with
+// "could not be found", instead of falling back to the default profile the
+// way a genuinely *unset* AWS_PROFILE would. MCP hosts commonly populate
+// .mcp.json's optional env entries as "" when the user hasn't filled them
+// in (this connector's own template does exactly that), so the empty-vs-
+// unset distinction has to be handled here rather than assumed away.
+func scrubEmptyPassthroughEnv() {
+	for _, key := range []string{"AWS_PROFILE", "AWS_REGION"} {
+		if v, ok := os.LookupEnv(key); ok && strings.TrimSpace(v) == "" {
+			_ = os.Unsetenv(key)
+		}
+	}
+}
+
 func loadServerConfig() serverConfig {
 	cfg := serverConfig{cliPath: "aws"}
 	if p := strings.TrimSpace(os.Getenv("AWS_MCP_CLI_PATH")); p != "" {
@@ -506,6 +522,7 @@ func main() {
 		return
 	}
 
+	scrubEmptyPassthroughEnv()
 	cfg := loadServerConfig()
 	if err := checkStartup(cfg); err != nil {
 		fmt.Fprintf(os.Stderr, "aws-connector-server: %v\n", err)

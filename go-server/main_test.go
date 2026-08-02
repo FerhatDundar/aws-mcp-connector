@@ -3,9 +3,24 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"os"
 	"strings"
 	"testing"
 )
+
+func TestScrubEmptyPassthroughEnv(t *testing.T) {
+	t.Setenv("AWS_PROFILE", "")
+	t.Setenv("AWS_REGION", "us-west-2")
+
+	scrubEmptyPassthroughEnv()
+
+	if _, ok := os.LookupEnv("AWS_PROFILE"); ok {
+		t.Error("expected empty AWS_PROFILE to be unset, but it's still present")
+	}
+	if v := os.Getenv("AWS_REGION"); v != "us-west-2" {
+		t.Errorf("expected non-empty AWS_REGION to be left alone, got %q", v)
+	}
+}
 
 func TestIsTruthy(t *testing.T) {
 	cases := map[string]bool{
