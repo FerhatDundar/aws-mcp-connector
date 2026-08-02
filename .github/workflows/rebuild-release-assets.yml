@@ -1,0 +1,85 @@
+name: Rebuild release assets
+
+# Manual safety net: re-builds and re-uploads the zipped plugin bundles for
+# an *existing* release/tag, in case the automated attach step in
+# release-please.yml needs to be re-run (flaky upload, new build target,
+# etc). Does not create tags or releases -- those come from release-please.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to rebuild assets for, e.g. v0.1.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-attach-assets:
+    name: Build & attach release assets
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go-server
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+          - goos: linux
+            goarch: arm64
+          - goos: darwin
+            goarch: amd64
+          - goos: darwin
+            goarch: arm64
+          - goos: windows
+            goarch: amd64
+          - goos: windows
+            goarch: arm64
+    steps:
+      - name: Checkout at tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go-server/go.mod
+          cache-dependency-path: go-server/go.sum
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          set -euo pipefail
+          BIN="aws-connector-server"
+          [ "$GOOS" = "windows" ] && BIN="aws-connector-server.exe"
+          go build -trimpath -ldflags="-s -w -X main.version=${{ inputs.tag }}" -o "$BIN" .
+          echo "BIN=$BIN" >> "$GITHUB_ENV"
+
+      - name: Assemble plugin bundle
+        run: |
+          set -euo pipefail
+          NAME="aws-mcp-connector-plugin-${{ inputs.tag }}-${{ matrix.goos }}-${{ matrix.goarch }}"
+          STAGE="/tmp/$NAME"
+          mkdir -p "$STAGE/plugin/.claude-plugin" "$STAGE/plugin/servers/go"
+          cp "$BIN" "$STAGE/plugin/servers/go/"
+          cp ../plugin/.claude-plugin/plugin.json "$STAGE/plugin/.claude-plugin/"
+          sed "s#servers/go/aws-connector-server#servers/go/${BIN}#" ../plugin/.mcp.json > "$STAGE/plugin/.mcp.json"
+          cp ../README.md ../SETUP.md ../LICENSE "$STAGE/"
+          ( cd /tmp && zip -r -q "${NAME}.zip" "$NAME" )
+          mv "/tmp/${NAME}.zip" .
+          echo "ZIP=${NAME}.zip" >> "$GITHUB_ENV"
+
+      - name: Upload asset to the release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ inputs.tag }}" \
+            "${ZIP}" --repo "${{ github.repository }}" --clobber

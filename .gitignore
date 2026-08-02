@@ -1,0 +1,5 @@
+.env
+*.token
+go-server/aws-connector-server
+plugin/servers/go/aws-connector-server
+# Add any local test-double state dirs here, e.g. localstack-data/ for AWS-backed connectors.

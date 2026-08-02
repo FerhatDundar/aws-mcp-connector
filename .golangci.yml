@@ -1,0 +1,31 @@
+version: "2"
+
+run:
+  timeout: 3m
+
+linters:
+  default: none
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - unused
+    - misspell
+    - bodyclose
+    - gosec
+    - unconvert
+  settings:
+    gosec:
+      excludes: []
+      # Add specific exclusions here with a one-line reason if the linter
+      # flags something that's actually fine for this connector, e.g.:
+      #   - G107 # HTTP request with variable URL — expected, we call a user-configured endpoint
+  exclusions:
+    paths:
+      - plugin
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

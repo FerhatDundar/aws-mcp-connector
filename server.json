@@ -1,0 +1,12 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.FerhatDundar/aws-mcp-connector",
+  "description": "MCP server for the AWS CLI. Read-only by default; single Go binary.",
+  "repository": {
+    "url": "https://github.com/FerhatDundar/aws-mcp-connector",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "websiteUrl": "https://github.com/FerhatDundar/aws-mcp-connector#readme",
+  "packages": []
+}

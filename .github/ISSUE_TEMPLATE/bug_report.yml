@@ -1,0 +1,67 @@
+name: 🐛 Bug report
+description: Something isn't working as expected
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill in as much as you can.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug. Include the tool name (e.g. `aws_get_item`) and arguments if relevant.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps or a tool call that reproduces the issue.
+      placeholder: |
+        1. Set up auth as described in SETUP.md
+        2. Call aws_get_item with id=...
+        3. See error: ...
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Connector version
+      description: Output of the binary version / release tag / commit SHA you're on
+      placeholder: v0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: go-version
+    attributes:
+      label: Go version (if built from source)
+      placeholder: go version go1.25.x darwin/arm64
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant error output
+      description: Paste the tool's error output or relevant logs. This will be rendered as code automatically.
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and didn't find a duplicate
+          required: true
+        - label: This isn't a security vulnerability (if it is, see SECURITY.md instead)
+          required: true

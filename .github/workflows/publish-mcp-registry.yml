@@ -1,0 +1,76 @@
+name: Publish to MCP Registry
+
+# Publishes server.json (regenerated fresh from the release's own zip
+# assets) to the official MCP Registry (registry.modelcontextprotocol.io).
+#
+# Called automatically by release-please.yml after a release is cut and
+# its assets are attached. Also runnable by hand via workflow_dispatch to
+# (re-)publish an existing release.
+#
+# Auth: GitHub OIDC (`mcp-publisher login github-oidc`) -- no secrets to
+# manage. The workflow's OIDC token identity (this repo, owned by
+# FerhatDundar) is what authorizes publishing under the
+# io.github.FerhatDundar/* namespace.
+
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag to publish, e.g. v0.1.0"
+        required: true
+        type: string
+      version:
+        description: "Version without the leading v, e.g. 0.1.0"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to MCP Registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # Intentionally NOT pinned to inputs.tag_name: server.json is
+        # rendered entirely from the downloaded release assets below, and
+        # scripts/render-server-json.sh must come from a ref that has it
+        # (older release tags predate this script).
+
+      - name: Download release assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          gh release download "${{ inputs.tag_name }}" \
+            --repo "${{ github.repository }}" --dir assets --pattern "*.zip"
+          ls -la assets
+
+      - name: Render server.json for this release
+        run: |
+          set -euo pipefail
+          chmod +x scripts/render-server-json.sh
+          ./scripts/render-server-json.sh "${{ inputs.version }}" "${{ inputs.tag_name }}" assets | tee server.json
+
+      - name: Install mcp-publisher
+        run: |
+          set -euo pipefail
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+
+      - name: Authenticate to MCP Registry (GitHub OIDC)
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish to MCP Registry
+        run: ./mcp-publisher publish

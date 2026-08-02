@@ -1,0 +1,115 @@
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  release-please:
+    name: Propose / cut release
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          release-type: simple
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  build-and-attach-assets:
+    name: Build & attach release assets
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go-server
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+          - goos: linux
+            goarch: arm64
+          - goos: darwin
+            goarch: amd64
+          - goos: darwin
+            goarch: arm64
+          - goos: windows
+            goarch: amd64
+          - goos: windows
+            goarch: arm64
+    steps:
+      - name: Checkout at release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go-server/go.mod
+          cache-dependency-path: go-server/go.sum
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          set -euo pipefail
+          BIN="aws-connector-server"
+          [ "$GOOS" = "windows" ] && BIN="aws-connector-server.exe"
+          go build -trimpath -ldflags="-s -w -X main.version=${{ needs.release-please.outputs.version }}" -o "$BIN" .
+          echo "BIN=$BIN" >> "$GITHUB_ENV"
+
+      - name: Assemble plugin bundle
+        run: |
+          set -euo pipefail
+          NAME="aws-mcp-connector-plugin-${{ needs.release-please.outputs.tag_name }}-${{ matrix.goos }}-${{ matrix.goarch }}"
+          STAGE="/tmp/$NAME"
+          mkdir -p "$STAGE/plugin/.claude-plugin" "$STAGE/plugin/servers/go"
+          cp "$BIN" "$STAGE/plugin/servers/go/"
+          cp ../plugin/.claude-plugin/plugin.json "$STAGE/plugin/.claude-plugin/"
+          # Rewrite the command's binary name so Windows bundles point at
+          # the .exe (BIN is "aws-connector-server[.exe]" from the build step above).
+          sed "s#servers/go/aws-connector-server#servers/go/${BIN}#" ../plugin/.mcp.json > "$STAGE/plugin/.mcp.json"
+          cp ../README.md ../SETUP.md ../LICENSE "$STAGE/"
+          ( cd /tmp && zip -r -q "${NAME}.zip" "$NAME" )
+          mv "/tmp/${NAME}.zip" .
+          echo "ZIP=${NAME}.zip" >> "$GITHUB_ENV"
+
+      - name: Upload asset to the release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Note: no "go-server/" prefix here -- this step already runs with
+          # working-directory: go-server (job default), so ZIP is relative
+          # to that. Prefixing it again looks for a nonexistent
+          # go-server/go-server/... path. This bit s3-mcp-connector on its
+          # first real release -- see references/gotchas.md.
+          gh release upload "${{ needs.release-please.outputs.tag_name }}" \
+            "${ZIP}" --repo "${{ github.repository }}" --clobber
+
+  publish-mcp-registry:
+    name: Publish to MCP Registry
+    needs: [release-please, build-and-attach-assets]
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/publish-mcp-registry.yml
+    with:
+      tag_name: ${{ needs.release-please.outputs.tag_name }}
+      version: ${{ needs.release-please.outputs.version }}

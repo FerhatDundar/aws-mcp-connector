@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "aws": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/servers/go/aws-connector-server",
+      "env": {
+        "AWS_PROFILE": "",
+        "AWS_REGION": "",
+        "AWS_MCP_ALLOW_WRITE": "false",
+        "AWS_MCP_ALLOWED_SERVICES": ""
+      }
+    }
+  }
+}

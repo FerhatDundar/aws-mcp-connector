@@ -1,0 +1,8 @@
+{
+  "name": "aws-connector",
+  "version": "0.1.0",
+  "description": "Run AWS CLI commands from an MCP agent, with a read-only-by-default safety gate on mutating operations. Local Go MCP server, no runtime dependencies.",
+  "author": {
+    "name": "FerhatDundar"
+  }
+}
