@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/FerhatDundar/aws-mcp-connector/compare/v0.1.1...v0.1.2) (2026-08-02)
+
+
+### Bug Fixes
+
+* unset AWS_PROFILE/AWS_REGION when set to empty string ([00cf8e3](https://github.com/FerhatDundar/aws-mcp-connector/commit/00cf8e3f838bd1f42db09ee5f8c84302677ea07e))
+
 ## [0.1.1](https://github.com/FerhatDundar/aws-mcp-connector/compare/v0.1.0...v0.1.1) (2026-08-02)
 
 
