@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # Intentionally NOT pinned to inputs.tag_name: server.json is
         # rendered entirely from the downloaded release assets below, and
         # scripts/render-server-json.sh must come from a ref that has it
